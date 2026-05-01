@@ -197,6 +197,7 @@
       if (bingImageUrl) {
         setBackground(bingImageUrl);
       } else {
+        updateTopButtons();
         loadBingWithProgress().then(function () {
           setBackground(bingImageUrl);
         });
