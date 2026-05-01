@@ -18,8 +18,8 @@
   let isAnimating = false;
 
   const MODE_LABELS = {
-    bing: "Bing 每日图",
-    custom: "自定义图片"
+    bing: "Bing壁纸图",
+    custom: "流萤图"
   };
 
   /* ---- 配置 ---- */
