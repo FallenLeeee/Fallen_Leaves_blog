@@ -277,13 +277,17 @@ html, body {
   }
 
   #bottom-bar {
-    gap: 10px;
-    padding: 12px 12px;
+    gap: 6px;
+    padding: 8px 6px;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
   }
 
   .bottom-link {
-    padding: 6px 12px;
-    font-size: 12px;
+    padding: 5px 8px;
+    font-size: 11px;
+    flex-shrink: 0;
   }
 
   .bottom-link .link-icon {
