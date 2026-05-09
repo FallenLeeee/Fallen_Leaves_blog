@@ -52,6 +52,10 @@ html, body {
   transform: translateY(-100%);
 }
 
+#loading-screen.no-slide {
+  transition: none;
+}
+
 #loading-fill {
   position: absolute;
   top: 0;

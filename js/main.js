@@ -68,13 +68,16 @@
     loadingPercent.textContent = p;
   }
 
-  function finishLoading() {
+  function finishLoading(instant) {
     loadingFill.style.width = "100%";
     loadingPercent.style.right = "0%";
     loadingPercent.textContent = "100";
+    if (instant) {
+      loadingScreen.classList.add("no-slide");
+    }
     setTimeout(function () {
       loadingScreen.classList.add("hide");
-    }, 500);
+    }, instant ? 0 : 500);
   }
 
   /* ---- 今日首次访问判断 ---- */
@@ -158,6 +161,55 @@
       };
 
       img.src = "https://bing.img.run/rand_uhd.php";
+    });
+  }
+
+  /* ---- 加载自定义图片（本地图片瞬间加载，模拟进度） ---- */
+  function loadCustomWithProgress() {
+    return new Promise(function (resolve) {
+      loadingScreen.classList.add("no-slide");
+      loadingScreen.classList.remove("hide");
+      loadingScreen.offsetHeight;
+      loadingScreen.classList.remove("no-slide");
+      loadingFill.style.width = "0%";
+      loadingPercent.style.right = "100%";
+      loadingPercent.textContent = "0";
+
+      var simulated = 0;
+      var done = false;
+
+      function finalize() {
+        if (done) return;
+        done = true;
+        finishLoading();
+        resolve();
+      }
+
+      var simTimer = setInterval(function () {
+        var remaining = 100 - simulated;
+        simulated += Math.max(1, remaining * 0.05);
+        if (simulated >= 100) {
+          simulated = 100;
+          clearInterval(simTimer);
+          finalize();
+          return;
+        }
+        setLoadingProgress(Math.round(simulated));
+      }, 80);
+
+      var img = new Image();
+      img.onload = function () {
+        setBackground(img.src);
+        clearInterval(simTimer);
+        simulated = 100;
+        setLoadingProgress(100);
+        finalize();
+      };
+      img.onerror = function () {
+        clearInterval(simTimer);
+        finalize();
+      };
+      img.src = "images/" + getImageList()[0];
     });
   }
 
@@ -300,7 +352,7 @@
         .catch(function () {});
     } else {
       bgMode = "custom";
-      applyCustomBackground();
+      await loadCustomWithProgress();
       markLoadedToday();
     }
 
