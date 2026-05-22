@@ -187,41 +187,53 @@
         loadingPercentFill.style.clipPath = "inset(0 100% 0 0)";
       }
       if (loadingBar) loadingBar.style.width = "0%";
-      if (loadingStatus) loadingStatus.textContent = "Initializing";
+      if (loadingStatus) loadingStatus.textContent = "Loading";
 
       var simulated = 0;
       var done = false;
+      var imgLoaded = false;
 
       function finalize() {
         if (done) return;
         done = true;
+        setLoadingProgress(100);
         finishLoading();
         resolve();
       }
 
-      var simTimer = setInterval(function () {
-        var remaining = 100 - simulated;
-        simulated += Math.max(1, remaining * 0.05);
-        if (simulated >= 100) {
-          simulated = 100;
+      function checkComplete() {
+        if (!done && imgLoaded) {
           clearInterval(simTimer);
-          finalize();
+          setTimeout(function () {
+            setLoadingProgress(100);
+            finishLoading();
+            resolve();
+          }, 200);
+        }
+      }
+
+      var simTimer = setInterval(function () {
+        if (imgLoaded) return;
+        if (simulated >= 90) {
+          simulated = 90;
+          setLoadingProgress(90);
           return;
         }
+        var remaining = 90 - simulated;
+        simulated += Math.max(1, remaining * 0.04);
+        if (simulated > 90) simulated = 90;
         setLoadingProgress(Math.round(simulated));
       }, 80);
 
       var img = new Image();
       img.onload = function () {
         setBackground(img.src);
-        clearInterval(simTimer);
-        simulated = 100;
-        setLoadingProgress(100);
-        finalize();
+        imgLoaded = true;
+        checkComplete();
       };
       img.onerror = function () {
-        clearInterval(simTimer);
-        finalize();
+        imgLoaded = true;
+        checkComplete();
       };
       img.src = "images/" + getImageList()[0];
     });
