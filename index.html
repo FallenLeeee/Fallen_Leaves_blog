@@ -4,30 +4,74 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fallen_Leaves的博客</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <div id="cursor-glow"></div>
+  <div id="cursor-trail"></div>
+
+  <canvas id="particles-canvas"></canvas>
+
   <div id="loading-screen" class="hide">
+    <div class="loading-grid"></div>
     <div id="loading-fill"></div>
-    <div id="loading-percent">0</div>
+    <div class="loading-corners">
+      <div class="loading-corner tl"></div>
+      <div class="loading-corner tr"></div>
+      <div class="loading-corner bl"></div>
+      <div class="loading-corner br"></div>
+    </div>
+    <div class="loading-content">
+      <div class="loading-logo">Fallen_Leaves</div>
+      <div class="loading-percent-wrapper">
+        <div id="loading-percent">0</div>
+        <div id="loading-percent-fill">0</div>
+      </div>
+      <div class="loading-bar-wrapper">
+        <div class="loading-bar-track">
+          <div id="loading-bar"></div>
+        </div>
+      </div>
+      <div class="loading-status">Initializing</div>
+    </div>
   </div>
 
   <div id="bg-layer"></div>
+  <div id="bg-overlay"></div>
 
   <div id="top-right-group">
+    <div id="clock-widget">
+      <div id="clock-time"></div>
+      <div id="clock-date"></div>
+    </div>
     <span id="welcome-text">欢迎来到 Fallen_Leaves 的博客</span>
-    <div id="toggle-btn" class="top-btn" title="切换背景图源">Bing 每日图</div>
+    <div id="toggle-btn" class="top-btn" title="切换背景图源">
+      <span class="btn-icon">◈</span>
+      <span class="btn-text">Bing 每日图</span>
+    </div>
     <div id="refresh-btn" class="top-btn" title="刷新Bing图片">↻</div>
   </div>
 
   <div id="poem-card">
+    <div class="poem-decoration">✦</div>
     <p id="poem-text"></p>
     <p id="poem-origin"></p>
+    <div class="poem-hint">点击刷新诗句</div>
   </div>
 
-  <div id="bottom-bar"></div>
+  <div id="bottom-bar">
+    <div class="bottom-bar-glow"></div>
+  </div>
+
+  <div id="scroll-indicator">
+    <div class="scroll-line"></div>
+  </div>
 
   <script src="config/links.js"></script>
+  <script src="js/particles.js"></script>
   <script src="js/bing.js"></script>
   <script src="js/poem.js"></script>
   <script src="js/main.js"></script>
