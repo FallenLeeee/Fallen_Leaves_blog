@@ -1,0 +1,218 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@keyframes flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.15; }
+}
+
+body {
+    font-family: 'Courier New', Courier, 'STXihei', '华文细黑', monospace;
+    background: #000;
+    color: #ccc;
+    line-height: 1.8;
+    overflow-x: hidden;
+    min-height: 100vh;
+    font-size: 17px;
+}
+
+/* =── Loading Screen ──*/
+#loadingScreen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease;
+}
+#loadingScreen.fade-out { opacity: 0; pointer-events: none; }
+#loadingGrid { position: absolute; inset: 0; pointer-events: none; }
+
+#ui {
+    position: fixed; inset: 0;
+    display: flex; justify-content: center; align-items: center;
+    pointer-events: none; z-index: 10;
+}
+.digit {
+    display: grid;
+    grid-template-columns: repeat(5, 8px);
+    grid-template-rows: repeat(7, 8px);
+    margin: 0 6px;
+}
+.dot { width: 8px; height: 8px; background: rgba(255,255,255,0.08); }
+.dot.on { background: rgba(255,255,255,0.9); }
+
+#loadingLabel {
+    position: fixed; bottom: 15%; left: 50%;
+    transform: translateX(-50%); z-index: 10;
+    font-size: 0.80rem; color: rgba(255,255,255,0.08);
+    letter-spacing: 6px; pointer-events: none;
+}
+
+/* =── Canvas ──*/
+#bgCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; }
+#particleCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
+
+.overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0;
+    background: radial-gradient(ellipse at 20% 80%, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.40) 60%, transparent 100%);
+    pointer-events: none;
+}
+
+.container { position: relative; z-index: 2; max-width: 820px; margin: 0 auto; padding: 0 24px 60px; }
+
+/* =── Content reveal ──*/
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22,1,0.36,1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+.hero { padding: 60px 0 40px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.hero h1 { font-size: 1.6rem; font-weight: 300; letter-spacing: 6px; color: #e0e0e0; }
+.siteline { margin-top: 6px; font-size: 0.95rem; color: #bbb; letter-spacing: 6px; }
+
+.social { display: flex; justify-content: center; gap: 16px; margin: 28px 0 0; }
+.social a {
+    display: inline-flex; align-items: center; gap: 8px; padding: 12px 26px;
+    border-radius: 8px; text-decoration: none; color: #ccc; font-size: 0.95rem;
+    border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04);
+    transition: all 0.25s;
+}
+.social a:hover {
+    color: #fff; border-color: rgba(0,255,136,0.3); background: rgba(0,255,136,0.06);
+    transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,255,136,0.06);
+}
+.social .badge { font-size: 0.75rem; padding: 2px 10px; border-radius: 4px; background: rgba(255,255,255,0.06); color: #999; }
+
+.section { padding: 40px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.section:last-of-type { border-bottom: none; }
+
+.section-title {
+    font-size: 1.1rem; font-weight: 400; letter-spacing: 3px; color: #ccc;
+    margin-bottom: 24px; display: flex; align-items: center; gap: 12px;
+}
+.section-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, rgba(255,255,255,0.10), transparent); }
+
+.about-text { font-size: 0.95rem; color: #aaa; line-height: 1.8; max-width: 640px; }
+
+/* =── Tech Stack ──*/
+.skills-section { padding: 32px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.skills-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+.skill-tag {
+    padding: 10px 20px; border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.03);
+    font-size: 0.92rem; color: #bbb; transition: all 0.2s;
+}
+.skill-tag:hover { border-color: rgba(0,255,136,0.35); background: rgba(0,255,136,0.07); color: #eee; }
+
+/* =── GitHub ──*/
+.github-section { padding: 32px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.github-stats { display: flex; justify-content: center; align-items: stretch; gap: 16px; flex-wrap: wrap; }
+.github-stats a { display: flex; line-height: 0; }
+.github-stats img { border-radius: 6px; max-width: 100%; height: auto; }
+
+/* =── Projects ──*/
+.project-card {
+    padding: 28px; border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.10); background: rgba(255,255,255,0.02);
+    transition: all 0.3s; cursor: pointer;
+}
+.project-card:hover { border-color: rgba(255,255,255,0.10); background: rgba(255,255,255,0.03); }
+.project-card h3 { font-size: 1.15rem; font-weight: 400; color: #eee; margin-bottom: 10px; }
+.project-card h3 a { color: #eee; text-decoration: none; transition: color 0.2s; }
+.project-card h3 a:hover { color: rgba(0,255,136,0.7); }
+.project-card p { font-size: 0.92rem; color: #aaa; line-height: 1.7; margin-bottom: 12px; }
+.project-card .meta { font-size: 0.78rem; color: #555; }
+.project-card .meta a { color: #999; text-decoration: none; transition: color 0.2s; }
+.project-card .meta a:hover { color: rgba(0,255,136,0.6); }
+.project-card .tag {
+    display: inline-block; font-size: 0.75rem; padding: 3px 12px;
+    border-radius: 999px; border: 1px solid rgba(255,255,255,0.12); color: #999; margin-right: 6px;
+}
+
+.project-readme { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.7s cubic-bezier(0.34,1.56,0.64,1), opacity 0.5s ease; }
+.project-card.expanded .project-readme { max-height: 3000px; opacity: 1; }
+.project-readme-inner {
+    border-top: 1px solid rgba(255,255,255,0.08); padding-top: 18px; margin-top: 16px;
+    font-size: 0.90rem; color: #bbb; line-height: 1.8; word-wrap: break-word;
+}
+.project-readme-inner h1 { font-size: 1.3rem; }
+.project-readme-inner h2 { font-size: 1.15rem; }
+.project-readme-inner h3 { font-size: 1.05rem; }
+.project-readme-inner h1, .project-readme-inner h2, .project-readme-inner h3, .project-readme-inner h4 {
+    color: #eee; font-weight: 400; margin: 20px 0 10px;
+}
+.project-readme-inner p { margin: 8px 0; color: #bbb; font-size: 0.90rem; }
+.project-readme-inner code {
+    font-family: 'Courier New', Courier, monospace;
+    background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 3px;
+    font-size: 0.85rem; color: #ddd;
+}
+.project-readme-inner pre {
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px; padding: 14px 16px; overflow-x: auto; margin: 12px 0;
+}
+.project-readme-inner pre code { background: none; padding: 0; border-radius: 0; }
+.project-readme-inner a { color: rgba(0,255,136,0.75); text-decoration: none; }
+.project-readme-inner a:hover { color: rgba(0,255,136,0.9); }
+.project-readme-inner img { max-width: 100%; border-radius: 6px; margin: 12px 0; border: 1px solid rgba(255,255,255,0.06); }
+.project-readme-inner ul, .project-readme-inner ol { padding-left: 20px; margin: 8px 0; }
+.project-readme-inner li { margin: 4px 0; }
+.project-readme-inner blockquote {
+    border-left: 3px solid rgba(0,255,136,0.3); padding-left: 14px;
+    margin: 12px 0; color: #777; font-style: italic;
+}
+.project-readme-inner table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.82rem; }
+.project-readme-inner th, .project-readme-inner td { border: 1px solid rgba(255,255,255,0.08); padding: 8px 12px; text-align: left; }
+.project-readme-inner th { background: rgba(255,255,255,0.03); color: #aaa; }
+.project-readme-inner hr { border: none; border-top: 1px solid rgba(255,255,255,0.06); margin: 16px 0; }
+.project-readme-loading { padding: 20px 0; text-align: center; color: #555; font-size: 0.82rem; }
+
+/* =── Corner firefly ──*/
+.corner-firefly {
+    position: fixed; bottom: 0; right: 0; z-index: 3; width: 340px; height: auto;
+    pointer-events: none; opacity: 0.8; filter: brightness(1.3) contrast(1.05);
+    transition: opacity 0.8s ease;
+}
+
+@media (max-width: 600px) { .corner-firefly { width: 240px; opacity: 0.7; } }
+
+/* =── Scrollbar ──*/
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: #222; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #333; }
+
+/* =── Responsive ──*/
+@media (max-width: 640px) {
+    .container { padding: 0 16px 40px; }
+    .hero { padding: 40px 0 28px; }
+    .hero h1 { font-size: 1.1rem; letter-spacing: 4px; }
+    .siteline { font-size: 0.75rem; letter-spacing: 4px; }
+    .social { flex-direction: column; align-items: center; gap: 10px; margin: 20px 0 0; }
+    .social a { width: 100%; max-width: 280px; justify-content: center; padding: 8px 16px; font-size: 0.82rem; }
+    .section { padding: 28px 0; }
+    .section-title { font-size: 0.90rem; gap: 8px; margin-bottom: 16px; }
+    .project-card { padding: 16px; }
+    .project-card h3 { font-size: 0.95rem; }
+    .project-card p { font-size: 0.82rem; }
+    .project-card .meta { font-size: 0.72rem; }
+    .project-readme-inner { font-size: 0.80rem; }
+    .project-readme-inner h1 { font-size: 1.05rem; }
+    .project-readme-inner h2 { font-size: 0.95rem; }
+    .project-readme-inner h3 { font-size: 0.90rem; }
+    .project-readme-inner pre { padding: 10px 12px; font-size: 0.75rem; white-space: pre-wrap; word-break: break-word; }
+    .project-readme-inner table { font-size: 0.72rem; display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .project-readme-inner th, .project-readme-inner td { padding: 6px 8px; }
+    .project-readme-inner blockquote { padding-left: 10px; }
+    .corner-firefly { width: 200px; opacity: 0.5; }
+    .skills-section, .github-section { padding: 24px 0; }
+    .skill-tag { font-size: 0.78rem; padding: 6px 14px; }
+    .github-stats { flex-direction: column; align-items: center; }
+    .github-stats img { max-width: 340px; }
+    .digit { grid-template-columns: repeat(5, 5px); grid-template-rows: repeat(7, 5px); }
+    .dot { width: 5px; height: 5px; }
+}
