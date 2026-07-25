@@ -455,4 +455,36 @@ body {
     .github-stats a { flex: none; width: 100%; max-width: 340px; }
     .digit { grid-template-columns: repeat(5, 5px); grid-template-rows: repeat(7, 5px); }
     .dot { width: 5px; height: 5px; }
+
+    /* 手机端：描边常亮 + 降低强度 */
+    .section, .skills-section, .github-section {
+        background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.06), transparent 70%),
+                    linear-gradient(160deg, rgba(255, 255, 255, 0.022), rgba(255, 255, 255, 0.006));
+    }
+    .section::before, .skills-section::before, .github-section::before,
+    .social a::before, .skill-tag::before, .github-stats a::before,
+    .project-card::after,
+    .section.spot-active::before, .skills-section.spot-active::before,
+    .github-section.spot-active::before, .social a.spot-active::before,
+    .skill-tag.spot-active::before, .github-stats a.spot-active::before,
+    .project-card.spot-active::after {
+        background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.20) 40%, transparent 68%);
+        opacity: 0.7;
+        transition: none;
+    }
+    .social a {
+        background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.07), transparent 70%),
+                    linear-gradient(160deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    }
+    .skill-tag {
+        background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.07), transparent 70%),
+                    rgba(255, 255, 255, 0.035);
+    }
+    .project-card {
+        background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.04), transparent 70%),
+                    linear-gradient(160deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.015));
+    }
+    .github-stats a {
+        background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.05), transparent 70%);
+    }
 }
