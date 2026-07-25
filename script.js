@@ -1,5 +1,9 @@
 (function() {
 
+    /* ─── Shared: DPR cap（防高分屏掉帧）& reduced-motion ─── */
+    const DPR = Math.min(window.devicePixelRatio || 1, 2);
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     /* ─── 0. Loading screen (scan + digit mask) ─── */
     const loadingScreen = document.getElementById('loadingScreen');
     const lCanvas = document.getElementById('loadingGrid');
@@ -66,9 +70,9 @@
 
     function resizeLoad() {
         const w = innerWidth, h = innerHeight;
-        lCanvas.width = w * devicePixelRatio; lCanvas.height = h * devicePixelRatio;
+        lCanvas.width = w * DPR; lCanvas.height = h * DPR;
         lCanvas.style.width = w + 'px'; lCanvas.style.height = h + 'px';
-        lCtx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+        lCtx.setTransform(DPR, 0, 0, DPR, 0, 0);
         lCell = (w < 600) ? 14 : 16;
         lCols = Math.ceil(w / lCell); lRows = Math.ceil(h / lCell);
         lGrid = [];
@@ -117,13 +121,9 @@
             loadingScreen.classList.add('fade-out');
             setTimeout(() => {
                 loadingScreen.style.display = 'none';
-                const reveals = document.querySelectorAll('.reveal');
-                reveals.forEach((el, i) => {
-                    setTimeout(() => {
-                        el.classList.add('visible');
-                        if (i === reveals.length - 1) initParticles(80);
-                    }, i * 180);
-                });
+                initReveals();
+                startTypewriter();
+                if (!reduceMotion) initParticles(80);
             }, 800);
         }
     }
@@ -139,9 +139,9 @@
 
     function resizeBg() {
         const w = innerWidth, h = innerHeight;
-        bgCanvas.width = w * devicePixelRatio; bgCanvas.height = h * devicePixelRatio;
+        bgCanvas.width = w * DPR; bgCanvas.height = h * DPR;
         bgCanvas.style.width = w + 'px'; bgCanvas.style.height = h + 'px';
-        bgCtx.scale(devicePixelRatio, devicePixelRatio);
+        bgCtx.setTransform(DPR, 0, 0, DPR, 0, 0);
         CELL = (w < 600) ? 12 : 18;
         cols = Math.ceil(w / CELL) + 2; rows = Math.ceil(h / CELL) + 2;
         grid = [];
@@ -177,12 +177,12 @@
     /* ─── 2. Firefly particles ─── */
     const pCanvas = document.getElementById('particleCanvas');
     const pCtx = pCanvas.getContext('2d');
-    let particles = [], particlesRunning = false;
+    let particles = [];
 
     function resizeP() {
-        pCanvas.width = innerWidth * devicePixelRatio; pCanvas.height = innerHeight * devicePixelRatio;
+        pCanvas.width = innerWidth * DPR; pCanvas.height = innerHeight * DPR;
         pCanvas.style.width = innerWidth + 'px'; pCanvas.style.height = innerHeight + 'px';
-        pCtx.scale(devicePixelRatio, devicePixelRatio);
+        pCtx.setTransform(DPR, 0, 0, DPR, 0, 0);
     }
 
     function initParticles(count) {
@@ -195,7 +195,6 @@
                 life: 0.3 + Math.random() * 0.7, phase: Math.random() * Math.PI * 2,
                 speed: 0.3 + Math.random() * 0.5, drift: (Math.random() - 0.5) * 0.3
             });
-        if (!particlesRunning) { particlesRunning = true; animateBg(); }
     }
 
     function drawP(now) {
@@ -220,18 +219,33 @@
         }
     }
 
+    let bgRaf = null;
     function animateBg(ts) {
         const now = ts || performance.now();
         drawBg(now); drawP(now);
-        requestAnimationFrame(animateBg);
+        bgRaf = requestAnimationFrame(animateBg);
     }
 
-    resizeBg(); resizeP(); animateBg();
+    resizeBg(); resizeP();
+    if (reduceMotion) { drawBg(0); }
+    else { bgRaf = requestAnimationFrame(animateBg); }
 
     let rt;
     window.addEventListener('resize', () => {
         clearTimeout(rt);
-        rt = setTimeout(() => { resizeBg(); resizeP(); }, 200);
+        rt = setTimeout(() => {
+            resizeBg(); resizeP();
+            if (reduceMotion) drawBg(0);
+        }, 200);
+    });
+
+    /* 标签页隐藏时暂停 canvas 渲染 */
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            if (bgRaf !== null) { cancelAnimationFrame(bgRaf); bgRaf = null; }
+        } else if (bgRaf === null && !reduceMotion) {
+            bgRaf = requestAnimationFrame(animateBg);
+        }
     });
 
     /* ─── 3. Render projects from data ─── */
@@ -242,16 +256,17 @@
         var projects = window.__projects || [];
         projects.forEach(function(item, idx) {
             var card = document.createElement('div');
-            card.className = 'project-card';
+            card.className = 'project-card reveal';
+            card.style.setProperty('--reveal-delay', (idx * 100) + 'ms');
             if (idx > 0) { card.style.marginTop = '16px'; }
             card.innerHTML =
                 '<h3><a href="' + item.gh + '" target="_blank" rel="noopener">' + item.title + '</a></h3>' +
                 '<p>' + item.desc + '</p>' +
                 '<div class="meta">' +
-                    '<span><a href="' + item.gh + '" target="_blank" rel="noopener">' + item.gh.replace('https://', '') + ' \u2192</a></span>' +
+                    '<span><a href="' + item.gh + '" target="_blank" rel="noopener">' + item.gh.replace('https://', '') + ' →</a></span>' +
                 '</div>' +
                 '<div class="project-readme">' +
-                    '<div class="project-readme-loading">\u2726 \u52a0\u8f7d README \u4e2d ...</div>' +
+                    '<div class="project-readme-loading">✦ 加载 README 中 ...</div>' +
                 '</div>';
             var md = item.md;
             card.addEventListener('click', function(e) {
@@ -269,5 +284,185 @@
             });
             container.appendChild(card);
         });
+    })();
+
+    /* ─── 4. Scroll reveal（IntersectionObserver 驱动，loading 结束后启动）─── */
+    function initReveals() {
+        const reveals = document.querySelectorAll('.reveal');
+        if (reduceMotion || !('IntersectionObserver' in window)) {
+            reveals.forEach(el => el.classList.add('visible'));
+            return;
+        }
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(en => {
+                if (en.isIntersecting) {
+                    en.target.classList.add('visible');
+                    io.unobserve(en.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        reveals.forEach((el, i) => {
+            if (!el.style.getPropertyValue('--reveal-delay'))
+                el.style.setProperty('--reveal-delay', (Math.min(i, 3) * 90) + 'ms');
+            io.observe(el);
+        });
+    }
+
+    /* ─── 5. Hero 终端打字机 ─── */
+    function startTypewriter() {
+        const h1 = document.querySelector('.hero h1');
+        if (!h1 || reduceMotion) return;
+        const text = h1.textContent;
+        h1.textContent = '';
+        const cursor = document.createElement('span');
+        cursor.className = 'cursor';
+        cursor.textContent = '▌';
+        h1.appendChild(cursor);
+        let i = 0;
+        (function tick() {
+            if (i < text.length) {
+                cursor.before(document.createTextNode(text[i++]));
+                setTimeout(tick, 80 + Math.random() * 70);
+            }
+        })();
+    }
+
+    /* ─── 6. 流萤鼠标视差（lerp 平滑，反向轻移）─── */
+    (function() {
+        const wrap = document.querySelector('.firefly-wrap');
+        if (!wrap || reduceMotion) return;
+        let tx = 0, ty = 0, cx = 0, cy = 0;
+        window.addEventListener('mousemove', (e) => {
+            tx = e.clientX / innerWidth - 0.5;
+            ty = e.clientY / innerHeight - 0.5;
+        }, { passive: true });
+        (function loop() {
+            cx += (tx * -14 - cx) * 0.06;
+            cy += (ty * -10 - cy) * 0.06;
+            wrap.style.transform = 'translate3d(' + cx.toFixed(2) + 'px,' + cy.toFixed(2) + 'px,0)';
+            requestAnimationFrame(loop);
+        })();
+    })();
+
+    /* ─── 7. 光标聚光（照亮边框/背景）+ 距离感应 3D 按压 ─── */
+    (function() {
+        if (reduceMotion || window.matchMedia('(hover: none)').matches) return;
+
+        const SPOT_SEL = '.section, .skills-section, .github-section, .project-card, .social a, .skill-tag, .github-stats a';
+        const PRESS_CFG = [
+            ['.social a',       { depth: 10, tilt: 6,   lift: 2 }],
+            ['.skill-tag',      { depth: 8,  tilt: 7,   lift: 1 }],
+            ['.project-card',   { depth: 6,  tilt: 2.5, lift: 2 }],
+            ['.github-stats a', { depth: 10, tilt: 5,   lift: 1 }],
+            ['.section',        { depth: 3,  tilt: 1.0, lift: 0 }],
+            ['.skills-section', { depth: 2.5,tilt: 1.0, lift: 0 }],
+            ['.github-section', { depth: 2.5,tilt: 1.0, lift: 0 }],
+            ['.section-title',  { depth: 2,  tilt: 1.5, lift: 0 }],
+            ['.about-text',     { depth: 1.5,tilt: 1.2, lift: 0 }],
+            ['.skills-grid',    { depth: 1.5,tilt: 0.6, lift: 0 }]
+        ];
+        const SPOT_RADIUS = 560;  // 与最大渐变半径一致，超出即停写
+        let targets = [];
+        let mx = -10000, my = -10000, rafPending = false;
+
+        function collect() {
+            const map = new Map();
+            document.querySelectorAll(SPOT_SEL).forEach(el =>
+                map.set(el, { el: el, spot: true, press: null, spotOn: false, pressOn: false }));
+            PRESS_CFG.forEach(function(pair) {
+                document.querySelectorAll(pair[0]).forEach(el => {
+                    const t = map.get(el) || { el: el, spot: false, press: null, spotOn: false, pressOn: false };
+                    t.press = pair[1];
+                    map.set(el, t);
+                });
+            });
+            targets = Array.from(map.values());
+            measure();
+        }
+
+        /* 缓存文档坐标下的盒模型，避免逐帧 getBoundingClientRect */
+        function measure() {
+            const sx = window.scrollX, sy = window.scrollY;
+            for (const t of targets) {
+                const r = t.el.getBoundingClientRect();
+                t.left = r.left + sx; t.top = r.top + sy;
+                t.w = r.width; t.h = r.height;
+                t.cx = t.left + t.w / 2; t.cy = t.top + t.h / 2;
+                t.R = 140 + Math.max(t.w, t.h) * 0.6;  // 按压影响半径随元素尺寸放大
+            }
+        }
+
+        function update() {
+            rafPending = false;
+            for (const t of targets) {
+                if (t.spot) {
+                    /* 光标到元素盒的最近距离，超出光圈半径则跳过（仅写一次复位值） */
+                    const nx = Math.max(t.left, Math.min(mx, t.left + t.w));
+                    const ny = Math.max(t.top, Math.min(my, t.top + t.h));
+                    const sdx = mx - nx, sdy = my - ny;
+                    if (sdx * sdx + sdy * sdy < SPOT_RADIUS * SPOT_RADIUS) {
+                        t.el.style.setProperty('--mx', (mx - t.left) + 'px');
+                        t.el.style.setProperty('--my', (my - t.top) + 'px');
+                        if (!t.spotOn) { t.el.classList.add('spot-active'); t.spotOn = true; }
+                    } else if (t.spotOn) {
+                        t.el.classList.remove('spot-active');
+                        t.el.style.setProperty('--mx', '-600px');
+                        t.el.style.setProperty('--my', '-600px');
+                        t.spotOn = false;
+                    }
+                }
+                if (t.press) {
+                    const dx = mx - t.cx, dy = my - t.cy;
+                    let p = 1 - Math.sqrt(dx * dx + dy * dy) / t.R;
+                    /* reveal 未完成的元素不接管 transform，避免挡住入场动画 */
+                    const revealed = !t.el.classList.contains('reveal') || t.el.classList.contains('visible');
+                    if (!revealed || p <= 0) {
+                        if (t.pressOn) { t.el.style.transform = ''; t.pressOn = false; }
+                        continue;
+                    }
+                    p = p * p * (3 - 2 * p);  // smoothstep 衰减
+                    /* 展开的 project-card 按压强度减半，避免 README 区域过大的位移 */
+                    let scale = 1;
+                    if (t.el.classList.contains('project-card') && t.el.classList.contains('expanded'))
+                        scale = 0.35;
+                    const tx = Math.max(-1, Math.min(1, dx / (t.w / 2)));
+                    const ty = Math.max(-1, Math.min(1, dy / (t.h / 2)));
+                    t.el.style.transform =
+                        'perspective(720px) translateZ(' + (-t.press.depth * p * scale).toFixed(2) + 'px)' +
+                        ' translateY(' + (-t.press.lift * p * scale).toFixed(2) + 'px)' +
+                        ' rotateX(' + (-ty * t.press.tilt * p * scale).toFixed(2) + 'deg)' +
+                        ' rotateY(' + (tx * t.press.tilt * p * scale).toFixed(2) + 'deg)';
+                    t.pressOn = true;
+                }
+            }
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            mx = e.pageX; my = e.pageY;
+            if (!rafPending) { rafPending = true; requestAnimationFrame(update); }
+        }, { passive: true });
+
+        document.addEventListener('mouseleave', () => {
+            mx = my = -10000;
+            for (const t of targets) {
+                if (t.spotOn) {
+                    t.el.classList.remove('spot-active');
+                    t.el.style.setProperty('--mx', '-600px');
+                    t.el.style.setProperty('--my', '-600px');
+                    t.spotOn = false;
+                }
+                if (t.pressOn) { t.el.style.transform = ''; t.pressOn = false; }
+            }
+        });
+
+        let fxRt;
+        window.addEventListener('resize', () => { clearTimeout(fxRt); fxRt = setTimeout(measure, 200); });
+        window.addEventListener('load', measure);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+        /* 卡片展开/收起后高度变化，过渡结束后重测 */
+        const pc = document.getElementById('projects-container');
+        if (pc) pc.addEventListener('click', () => setTimeout(measure, 800));
+
+        collect();
     })();
 })();

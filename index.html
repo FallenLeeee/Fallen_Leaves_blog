@@ -3,9 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FallenLeaves 的个人博客 —— 流萤厨一只，没事喜欢捣鼓 AI，写点小玩意儿。">
+    <meta name="theme-color" content="#050505">
+    <meta property="og:title" content="FallenLeaves的博客">
+    <meta property="og:description" content="流萤厨一只，没事喜欢捣鼓 AI，写点小玩意儿。">
+    <meta property="og:type" content="website">
     <title>FallenLeaves的博客</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="vendor/marked.min.js"></script>
 </head>
 <body>
 
@@ -20,7 +28,10 @@
     <canvas id="particleCanvas"></canvas>
     <div class="overlay"></div>
 
-    <img class="corner-firefly" src="firefly.svg" alt="Firefly">
+    <div class="firefly-wrap" aria-hidden="true">
+        <div class="firefly-glow"></div>
+        <img class="corner-firefly" src="firefly.svg" alt="">
+    </div>
 
     <div class="container">
 
@@ -49,13 +60,13 @@
 
         <!-- About -->
         <div class="section reveal">
-            <h2 class="section-title">✦ About</h2>
+            <h2 class="section-title"><span class="star">✦</span> About</h2>
             <p class="about-text">流萤厨一只，没事喜欢捣鼓AI。还是学生时间不多，再加上懒得考证所以没啥成就，就喜欢没事的时候写点小玩意儿。</p>
         </div>
 
         <!-- Tech Stack -->
         <div class="skills-section reveal">
-            <h2 class="section-title">✦ Tech Stack</h2>
+            <h2 class="section-title"><span class="star">✦</span> Tech Stack</h2>
             <div class="skills-grid">
                 <span class="skill-tag">Docker</span>
                 <span class="skill-tag">Python</span>
@@ -66,24 +77,30 @@
 
         <!-- GitHub Stats -->
         <div class="github-section reveal">
-            <h2 class="section-title">✦ GitHub</h2>
+            <h2 class="section-title"><span class="star">✦</span> GitHub</h2>
             <div class="github-stats">
-                <a href="https://github.com/FallenLeeee" target="_blank" rel="noopener">
-                    <img src="https://github-readme-stats.vercel.app/api?username=FallenLeeee&show_icons=true&bg_color=050505&text_color=777&title_color=bbb&icon_color=555&hide_border=true&hide_rank=true&card_width=360" alt="GitHub Stats" height="140">
+                <a href="https://github.com/FallenLeeee" target="_blank" rel="noopener" class="gh-stat-card" data-label="GitHub Stats">
+                    <img src="https://github-readme-stats-eight-theta.vercel.app/api?username=FallenLeeee&show_icons=true&bg_color=050505&text_color=777&title_color=bbb&icon_color=555&hide_border=true&hide_rank=true&card_width=300" alt="GitHub Stats" height="85" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
+                    <span class="gh-fallback">FallenLeeee 的 GitHub 统计</span>
                 </a>
-                <a href="https://github.com/FallenLeeee" target="_blank" rel="noopener">
-                    <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=FallenLeeee&layout=compact&bg_color=050505&text_color=777&title_color=bbb&hide_border=true&card_width=360" alt="Top Languages" height="140">
+                <a href="https://github.com/FallenLeeee" target="_blank" rel="noopener" class="gh-stat-card" data-label="Top Languages">
+                    <img src="https://github-readme-stats-eight-theta.vercel.app/api/top-langs/?username=FallenLeeee&layout=compact&bg_color=050505&text_color=777&title_color=bbb&hide_border=true&card_width=300" alt="Top Languages" height="85" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
+                    <span class="gh-fallback">FallenLeeee 的常用语言</span>
                 </a>
             </div>
         </div>
 
         <!-- Projects -->
         <div class="section reveal" id="projects-section">
-            <h2 class="section-title">✦ Projects</h2>
+            <h2 class="section-title"><span class="star">✦</span> Projects</h2>
             <div id="projects-container"></div>
         </div>
 
     </div>
+
+    <footer class="footer reveal">
+        © 2026 FallenLeaves<span class="sep">✦</span><a href="https://github.com/FallenLeeee" target="_blank" rel="noopener">GitHub</a><span class="sep">✦</span>Powered by GitHub Pages
+    </footer>
 
     <script src="projects-data.js"></script>
     <script src="script.js"></script>
