@@ -465,4 +465,28 @@
 
         collect();
     })();
+
+    /* ─── 8. 触摸按压反馈（JS 驱动 .pressed，松手/取消/移出/失焦一律清除，确保回正）─── */
+    (function() {
+        if (window.matchMedia('(hover: hover)').matches) return;
+        const PRESS_SEL = '.social a, .skill-tag, .project-card, .github-stats a, .footer a, .project-card h3 a, .project-card .meta a, .project-readme-inner a';
+        document.addEventListener('pointerdown', function(e) {
+            if (e.pointerType === 'mouse') return;
+            const el = e.target.closest(PRESS_SEL);
+            if (!el) return;
+            el.classList.add('pressed');
+            const clear = function() {
+                el.classList.remove('pressed');
+                window.removeEventListener('pointerup', clear);
+                window.removeEventListener('pointercancel', clear);
+                window.removeEventListener('pointerout', clear);
+            };
+            window.addEventListener('pointerup', clear, { passive: true });
+            window.addEventListener('pointercancel', clear, { passive: true });
+            window.addEventListener('pointerout', clear, { passive: true });
+        }, { passive: true });
+        document.addEventListener('visibilitychange', function() {
+            document.querySelectorAll('.pressed').forEach(function(el) { el.classList.remove('pressed'); });
+        });
+    })();
 })();

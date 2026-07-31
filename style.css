@@ -26,7 +26,7 @@
     --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 ::selection { background: var(--accent); color: #04140c; text-shadow: none; }
 
@@ -487,4 +487,40 @@ body {
     .github-stats a {
         background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.05), transparent 70%);
     }
+
+    /* 手机端按压反馈（JS 驱动 .pressed，松手自动回正）：覆盖 reveal 的延迟过渡，保证即时响应 */
+    .social a, .skill-tag, .project-card, .github-stats a, .footer a,
+    .project-card h3 a, .project-card .meta a, .project-readme-inner a {
+        touch-action: manipulation;
+    }
+    .social a {
+        transition: color 0.25s, border-color 0.25s, box-shadow 0.25s, background 0.25s, transform 0.1s var(--ease-out);
+        transition-delay: 0ms;
+        will-change: transform;
+    }
+    .social a.pressed {
+        background: var(--accent-12);
+        border-color: var(--accent-35);
+        box-shadow: 0 6px 22px rgba(0, 255, 136, 0.16);
+        transform: scale(0.96);
+    }
+    .skill-tag { transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.1s var(--ease-out); transition-delay: 0ms; }
+    .skill-tag.pressed { background: var(--accent-07); border-color: var(--accent-35); transform: scale(0.96); }
+    .project-card {
+        transition: border-color 0.3s, box-shadow 0.3s, transform 0.1s var(--ease-out);
+        transition-delay: 0ms;
+    }
+    .project-card.pressed {
+        border-color: rgba(0, 255, 136, 0.22);
+        box-shadow: 0 10px 32px rgba(0, 255, 136, 0.10);
+        transform: scale(0.985);
+    }
+    .github-stats a { transition: border-color 0.3s, box-shadow 0.3s, transform 0.1s var(--ease-out); transition-delay: 0ms; }
+    .github-stats a.pressed { border-color: var(--accent-35); transform: scale(0.97); }
+    .footer a { transition: color 0.2s, transform 0.1s var(--ease-out); transition-delay: 0ms; }
+    .footer a.pressed { color: var(--accent-70); }
+    .project-card h3 a, .project-card .meta a { transition: color 0.2s, transform 0.1s var(--ease-out); transition-delay: 0ms; }
+    .project-card h3 a.pressed, .project-card .meta a.pressed { color: var(--accent-70); }
+    .project-readme-inner a { transition: color 0.2s; }
+    .project-readme-inner a.pressed { color: var(--accent-90); }
 }
