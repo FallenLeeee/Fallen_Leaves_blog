@@ -487,8 +487,10 @@ body {
     .github-stats a {
         background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.05), transparent 70%);
     }
+}
 
-    /* 手机端按压反馈（JS 驱动 .pressed）：下压短促干脆，回弹用弹簧缓动，灵动不僵硬 */
+/* 手机端按压反馈（JS 驱动 .pressed）：仅触摸设备生效，避免窄窗口桌面端 3D 按压的 transform 被弹簧过渡拖尾 */
+@media (max-width: 640px) and (hover: none) {
     .social a, .skill-tag, .project-card, .github-stats a, .footer a,
     .project-card h3 a, .project-card .meta a, .project-readme-inner a {
         touch-action: manipulation;
