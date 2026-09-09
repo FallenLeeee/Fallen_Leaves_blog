@@ -1,6 +1,6 @@
 # PassiveMapRecorder
 
-一个纯客户端的 Fabric 模组，被动记录玩家已加载区块的地形数据，直接写入存档文件。
+一个纯客户端的 Fabric 模组，**被动记录**玩家已加载区块的地形数据，直接写入**存档文件**。
 
 > Minecraft 1.21.11 · Fabric Loader 0.18.4+ · Java 21+
 
