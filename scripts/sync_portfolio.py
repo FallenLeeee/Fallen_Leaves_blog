@@ -1,7 +1,7 @@
 """Sync portfolio from GitHub: fetch READMEs, rebuild projects-data.js."""
 import base64
 import json
-import urllib.request
+import subprocess
 from pathlib import Path
 
 USERNAME = "FallenLeeee"
@@ -10,6 +10,11 @@ MD_DIR = ROOT / "md"
 
 # Display order + card metadata (title/desc curated for the site)
 PROJECTS = [
+    {
+        "name": "MiBudsController",
+        "title": "MiBudsController",
+        "desc": "通过蓝牙 RFCOMM 控制 Redmi Buds 8 Pro 及协议兼容的小米/红米耳机的 Windows 桌面应用。",
+    },
     {
         "name": "NPURealtimeSubtitle",
         "title": "NPURealtimeSubtitle",
@@ -28,17 +33,17 @@ PROJECTS = [
 ]
 
 
-def fetch_json(url: str) -> dict:
-    req = urllib.request.Request(
-        url,
-        headers={"User-Agent": "portfolio-sync", "Accept": "application/vnd.github+json"},
+def gh_api(path: str) -> dict:
+    result = subprocess.run(
+        ["gh", "api", path],
+        capture_output=True,
+        check=True,
     )
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        return json.loads(resp.read().decode("utf-8"))
+    return json.loads(result.stdout.decode("utf-8"))
 
 
 def fetch_readme(repo_name: str) -> str:
-    data = fetch_json(f"https://api.github.com/repos/{USERNAME}/{repo_name}/readme")
+    data = gh_api(f"repos/{USERNAME}/{repo_name}/readme")
     return base64.b64decode(data["content"]).decode("utf-8")
 
 
