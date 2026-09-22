@@ -488,26 +488,33 @@ a { color: inherit; }
     margin-top: 16px;
     padding-top: 14px;
     border-top: 1px solid var(--border-soft);
+    font-weight: 500;
+    color: var(--text);
 }
 
-.project-readme-inner h1 { font-size: 1.3rem; }
-.project-readme-inner h2 { font-size: 1.15rem; }
-.project-readme-inner h3 { font-size: 1.05rem; }
+.project-readme-inner h1 { font-size: 1.3rem; font-weight: 600; }
+.project-readme-inner h2 { font-size: 1.15rem; font-weight: 600; }
+.project-readme-inner h3 { font-size: 1.05rem; font-weight: 600; }
 
 .project-readme-inner h1,
 .project-readme-inner h2,
 .project-readme-inner h3,
 .project-readme-inner h4 {
     color: var(--text-bright);
-    font-weight: 500;
     margin: 14px 0 8px;
 }
 
 .project-readme-inner p {
     margin: 8px 0;
-    color: var(--text-dim);
-    font-size: 0.9rem;
-    font-weight: 400;
+    color: var(--text);
+    font-size: 0.92rem;
+    font-weight: 500;
+}
+
+.project-readme-inner li {
+    margin: 4px 0;
+    color: var(--text);
+    font-weight: 500;
 }
 
 .project-readme-inner code {
@@ -515,7 +522,28 @@ a { color: inherit; }
     padding: 1px 6px;
     border-radius: 4px;
     font-size: 0.84em;
+    font-weight: 600;
     color: var(--accent-70);
+}
+
+.project-readme-inner pre code {
+    font-weight: 500;
+    color: var(--text-bright);
+}
+
+.project-readme-inner th,
+.project-readme-inner td {
+    font-weight: 500;
+    color: var(--text);
+}
+
+.project-readme-inner th {
+    font-weight: 600;
+}
+
+.project-readme-inner blockquote {
+    font-weight: 500;
+    color: var(--text-dim);
 }
 
 .project-readme-inner pre {
@@ -545,9 +573,21 @@ a { color: inherit; }
     color: var(--text);
 }
 
+.project-readme-inner th,
+.project-readme-inner td {
+    border: 1px solid var(--border-soft);
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.project-readme-inner th {
+    background: rgba(255, 255, 255, 0.03);
+}
+
 .project-readme-inner a {
     color: var(--accent-70);
     text-decoration: none;
+    font-weight: 500;
 }
 
 .project-readme-inner a:hover {
@@ -568,32 +608,17 @@ a { color: inherit; }
     margin: 8px 0;
 }
 
-.project-readme-inner li { margin: 4px 0; color: var(--text-dim); }
-
 .project-readme-inner blockquote {
     border-left: 2px solid var(--accent-35);
     padding-left: 12px;
     margin: 10px 0;
-    color: var(--text-faint);
 }
 
 .project-readme-inner table {
     border-collapse: collapse;
     width: 100%;
     margin: 12px 0;
-    font-size: 0.82rem;
-}
-
-.project-readme-inner th,
-.project-readme-inner td {
-    border: 1px solid var(--border-soft);
-    padding: 8px 12px;
-    text-align: left;
-}
-
-.project-readme-inner th {
-    background: rgba(255, 255, 255, 0.03);
-    color: var(--text-dim);
+    font-size: 0.84rem;
 }
 
 .project-readme-inner hr {

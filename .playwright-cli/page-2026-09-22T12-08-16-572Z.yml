@@ -1,0 +1,89 @@
+- generic [active] [ref=e1]:
+  - paragraph [ref=e2]: AI生成
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - heading "Fal ▌" [level=1] [ref=e5]:
+        - text: Fal
+        - generic [ref=e6]: ▌
+      - paragraph [ref=e7]: —— 落叶 ——
+      - generic [ref=e8]:
+        - link "Bilibili FALLENLEAVES_233" [ref=e9] [cursor=pointer]:
+          - /url: https://space.bilibili.com/491062624
+          - text: Bilibili
+          - generic [ref=e12]: FALLENLEAVES_233
+        - link "GitHub FallenLeeee" [ref=e13] [cursor=pointer]:
+          - /url: https://github.com/FallenLeeee
+          - text: GitHub
+          - generic [ref=e16]: FallenLeeee
+        - link "抖音 FallenLee" [ref=e17] [cursor=pointer]:
+          - /url: https://www.douyin.com/user/MS4wLjABAAAAR3K6HW8QwsuaDjyFrAQt5fJtC8XMJB4SMzOgHcVDwGEND9ABQGiOGqcGqluFDxd0
+          - text: 抖音
+          - generic [ref=e20]: FallenLee
+    - generic [ref=e21]:
+      - heading "✦ About" [level=2] [ref=e22]:
+        - generic [ref=e23]: ✦
+        - text: About
+      - paragraph [ref=e24]: 流萤厨一只，没事喜欢捣鼓AI。还是学生时间不多，再加上懒得考证所以没啥成就，就喜欢没事的时候写点小玩意儿。
+    - generic [ref=e25]:
+      - heading "✦ Tech Stack" [level=2] [ref=e26]:
+        - generic [ref=e27]: ✦
+        - text: Tech Stack
+      - generic [ref=e28]:
+        - generic [ref=e29]: C#
+        - generic [ref=e30]: Java
+        - generic [ref=e31]: Python
+        - generic [ref=e32]: JavaScript
+        - generic [ref=e33]: Docker
+    - generic [ref=e34]:
+      - heading "✦ GitHub" [level=2] [ref=e35]:
+        - generic [ref=e36]: ✦
+        - text: GitHub
+      - generic [ref=e37]:
+        - link [ref=e38] [cursor=pointer]:
+          - /url: https://github.com/FallenLeeee
+          - img "GitHub Stats" [ref=e39]
+        - link [ref=e40] [cursor=pointer]:
+          - /url: https://github.com/FallenLeeee
+          - img "Top Languages" [ref=e41]
+    - generic [ref=e42]:
+      - heading "✦ Projects" [level=2] [ref=e43]:
+        - generic [ref=e44]: ✦
+        - text: Projects
+      - generic [ref=e45]:
+        - generic [ref=e48] [cursor=pointer]:
+          - heading [level=3] [ref=e49]:
+            - link "MiBudsController" [ref=e50]:
+              - /url: https://github.com/FallenLeeee/MiBudsController
+          - paragraph [ref=e51]: 通过蓝牙 RFCOMM 控制 Redmi Buds 8 Pro 及协议兼容的小米/红米耳机的 Windows 桌面应用。
+          - link "github.com/FallenLeeee/MiBudsController →" [ref=e54]:
+            - /url: https://github.com/FallenLeeee/MiBudsController
+          - generic: ✦ 加载 README 中 ...
+        - generic [ref=e58] [cursor=pointer]:
+          - heading [level=3] [ref=e59]:
+            - link "NPURealtimeSubtitle" [ref=e60]:
+              - /url: https://github.com/FallenLeeee/NPURealtimeSubtitle
+          - paragraph [ref=e61]: Windows 11 本地实时双语字幕工具：采集系统声音，本地识别与翻译，屏幕底部透明字幕。
+          - link "github.com/FallenLeeee/NPURealtimeSubtitle →" [ref=e64]:
+            - /url: https://github.com/FallenLeeee/NPURealtimeSubtitle
+          - generic: ✦ 加载 README 中 ...
+        - generic [ref=e68] [cursor=pointer]:
+          - heading [level=3] [ref=e69]:
+            - link "PassiveMapRecorder" [ref=e70]:
+              - /url: https://github.com/FallenLeeee/PassiveMapRecorder
+          - paragraph [ref=e71]: 一个纯客户端的 Fabric 模组，被动记录玩家已加载区块的地形数据，直接写入存档文件。
+          - link "github.com/FallenLeeee/PassiveMapRecorder →" [ref=e74]:
+            - /url: https://github.com/FallenLeeee/PassiveMapRecorder
+          - generic: ✦ 加载 README 中 ...
+        - generic [ref=e78] [cursor=pointer]:
+          - heading [level=3] [ref=e79]:
+            - link "CPU 虚拟化解锁工具" [ref=e80]:
+              - /url: https://github.com/FallenLeeee/UnlockVirtualization
+          - paragraph [ref=e81]: 检测并管理占用 CPU 虚拟化的应用程序和服务。
+          - link "github.com/FallenLeeee/UnlockVirtualization →" [ref=e84]:
+            - /url: https://github.com/FallenLeeee/UnlockVirtualization
+          - generic: ✦ 加载 README 中 ...
+  - contentinfo [ref=e86]:
+    - text: © 2026 FallenLeaves✦
+    - link "GitHub" [ref=e87] [cursor=pointer]:
+      - /url: https://github.com/FallenLeeee
+    - text: ✦Powered by GitHub Pages
