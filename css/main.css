@@ -43,29 +43,30 @@ body {
     overflow-x: hidden;
     min-height: 100vh;
     font-size: 16.5px;
-    /* Windows 上 font-smoothing 几乎无效，用 text-shadow 柔边 + 微描边加实笔画 */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-rendering: geometricPrecision;
 }
 
-h1, h2, h3, h4, p, a, span, li, td, th, code, pre, div, button, .card-body, .project-readme-inner {
-    /* 同色 0.4px 双向柔边，等效更稳的抗锯齿观感 */
-    text-shadow:
-        0 0 0.4px currentColor,
-        0 0 0.4px currentColor;
-}
+/* 柔边 AA / 几何精度只给桌面：移动端全文 text-shadow 重绘很贵 */
+@media (min-width: 601px) {
+    body { text-rendering: geometricPrecision; }
 
-/* 小字再加一点微描边，避免细体发虚 */
-.project-card p,
-.project-card .meta,
-.project-readme-inner p,
-.project-readme-inner li,
-.project-readme-inner td,
-.project-readme-inner th,
-.about-text,
-.footer {
-    -webkit-text-stroke: 0.2px currentColor;
+    h1, h2, h3, h4, p, a, span, li, td, th, code, pre, div, button, .card-body, .project-readme-inner {
+        text-shadow:
+            0 0 0.4px currentColor,
+            0 0 0.4px currentColor;
+    }
+
+    .project-card p,
+    .project-card .meta,
+    .project-readme-inner p,
+    .project-readme-inner li,
+    .project-readme-inner td,
+    .project-readme-inner th,
+    .about-text,
+    .footer {
+        -webkit-text-stroke: 0.2px currentColor;
+    }
 }
 
 /* 滚动条：隐藏横向，纵向做成细暗条 */
@@ -127,9 +128,6 @@ a { color: inherit; }
     inset: 0;
     z-index: 100;
     background: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     transition: opacity 0.8s var(--ease-out);
 }
 
@@ -140,22 +138,32 @@ a { color: inherit; }
 
 #loadingScreen.hidden { display: none; }
 
+#loadingGrid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
 #ui {
+    position: absolute;
+    inset: 0;
     display: flex;
-    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
     z-index: 2;
 }
 
 .digit {
     display: grid;
-    grid-template-columns: repeat(5, 8px);
-    grid-template-rows: repeat(7, 8px);
-    gap: 2px;
+    grid-template-columns: repeat(5, 6px);
+    grid-template-rows: repeat(7, 6px);
+    margin: 0 6px;
 }
 
 .dot {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     background: rgba(255, 255, 255, 0.08);
 }
 
@@ -178,6 +186,18 @@ a { color: inherit; }
 @keyframes flicker {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.15; }
+}
+
+/* 仅部分离屏区做 CV；project 列表/卡片不要（估高抖动 + 展开重算） */
+.skills-section,
+.github-section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 280px;
+}
+
+.section:not(#projects-section) {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 360px;
 }
 
 /* ─── Layout ─── */
@@ -418,7 +438,6 @@ a { color: inherit; }
     position: relative;
     border-radius: 10px;
     transform-style: preserve-3d;
-    will-change: transform;
     min-height: 1px;
 }
 
@@ -429,7 +448,6 @@ a { color: inherit; }
     border: 1px solid rgba(255, 255, 255, 0.08);
     background: linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
     pointer-events: none;
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
 }
 
 .card-frame::before {
@@ -495,15 +513,21 @@ a { color: inherit; }
 
 .project-card .meta a:hover { color: var(--accent-70); }
 
+/* grid 0fr→1fr：高度跳变，不做高度动画 */
 .project-readme {
-    max-height: 0;
-    overflow: hidden;
+    display: grid;
+    grid-template-rows: 0fr;
     opacity: 0;
-    transition: max-height 0.7s var(--ease-spring), opacity 0.5s ease;
+    transition: opacity 0.2s ease;
+}
+
+.project-readme > .rm-collapse {
+    overflow: hidden;
+    min-height: 0;
 }
 
 .project-card.expanded .project-readme {
-    max-height: 3000px;
+    grid-template-rows: 1fr;
     opacity: 1;
 }
 
@@ -513,10 +537,13 @@ a { color: inherit; }
     border-top: 1px solid var(--border-soft);
     font-weight: 500;
     color: var(--text);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: geometricPrecision;
-    text-shadow: 0 0 0.4px currentColor, 0 0 0.4px currentColor;
+}
+
+@media (min-width: 601px) {
+    .project-readme-inner {
+        text-rendering: geometricPrecision;
+        text-shadow: 0 0 0.4px currentColor, 0 0 0.4px currentColor;
+    }
 }
 
 .project-readme-inner h1 { font-size: 1.3rem; font-weight: 600; }
@@ -805,13 +832,29 @@ a { color: inherit; }
     transition: transform 0.15s var(--ease-spring);
 }
 
-/* ─── 降级：无 WebGL / reduced motion ─── */
+/* ─── 降级：无 WebGL / 旧版 2D / reduced motion ─── */
 body.no-webgl #webgl { display: none; }
 
 body.no-webgl {
     background:
         radial-gradient(ellipse at 20% 80%, rgba(0, 255, 136, 0.05), transparent 50%),
         #050505;
+}
+
+#bgCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    /* 不用 100vw：含滚动条会在移动端裁掉右侧 */
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+body.legacy-bg .overlay {
+    z-index: 1;
+    background: linear-gradient(160deg, rgba(5, 5, 5, 0.4), rgba(5, 5, 5, 0.15));
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -831,8 +874,68 @@ body.no-webgl {
 
 /* ─── Responsive ─── */
 @media (max-width: 600px) {
-    .corner-firefly { width: 240px; opacity: 0.9; }
-    .firefly-wrap { width: 280px; height: 280px; }
+    html { scroll-behavior: auto; }
+
+    /* 展开：不做高度动画，一次布局 + 短淡入 */
+    /* 展开：高度跳变 + 较长内容淡入；收起：高度动画 */
+    .project-readme {
+        transition: grid-template-rows 0.3s var(--ease-out);
+    }
+    .project-card.expanded .project-readme {
+        grid-template-rows: 1fr;
+        transition: none;
+    }
+    .project-readme-inner {
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+    .project-card.expanded .project-readme-inner {
+        opacity: 1;
+    }
+    .project-card { perspective: none; }
+    .project-card.pressed { transition: none; }
+    .project-readme-inner { text-shadow: none; text-rendering: auto; }
+
+    /* 关掉 CV：估高不准会在滑动时反复重算 */
+    .section:not(#projects-section),
+    .skills-section,
+    .github-section {
+        content-visibility: visible;
+        contain-intrinsic-size: auto;
+    }
+
+    /* 移动端砍持续动画与跟踪鼠标的高光层 */
+    .corner-firefly {
+        animation: none !important;
+        will-change: auto;
+        width: 180px;
+        opacity: 0.55;
+    }
+    .firefly-wrap {
+        will-change: auto;
+        width: 210px;
+        height: 210px;
+        right: -36px;
+        bottom: -28px;
+    }
+    .hero h1 .cursor { animation: none; }
+    #loadingLabel { animation: none; }
+    .dot.on { box-shadow: none; }
+    .reveal { transition-duration: 0.4s; }
+
+    .section::before, .section::after,
+    .skills-section::before, .skills-section::after,
+    .github-section::before, .github-section::after,
+    .social a::before, .social a::after,
+    .skill-tag::before, .skill-tag::after,
+    .github-stats a::before, .github-stats a::after,
+    .project-card .card-frame::before, .project-card .card-frame::after {
+        display: none !important;
+    }
+
+    .overlay {
+        background: linear-gradient(180deg, rgba(5, 5, 5, 0.35), rgba(5, 5, 5, 0.15));
+    }
 
     .hero { padding: 48px 0 32px; }
     .hero h1 { letter-spacing: 0.04em; }
@@ -844,8 +947,17 @@ body.no-webgl {
 
     .section, .skills-section, .github-section { padding: 24px 16px; }
     .project-card .card-body { padding: 18px 16px 14px; }
-    .digit { grid-template-columns: repeat(5, 6px); grid-template-rows: repeat(7, 6px); }
-    .dot { width: 6px; height: 6px; }
+    .digit {
+        grid-template-columns: repeat(5, 4px);
+        grid-template-rows: repeat(7, 4px);
+        margin: 0 4px;
+    }
+    .dot { width: 4px; height: 4px; }
+}
+
+@keyframes rm-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 @media (max-width: 420px) {

@@ -12,8 +12,10 @@
     <title>FallenLeaves的博客</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/main.css">
+    <!-- 字体不阻塞首屏：先按 print 加载，onload 后切 all -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"></noscript>
+    <link rel="stylesheet" href="css/main.css?v=3">
     <script type="importmap">
     {
         "imports": {
@@ -27,6 +29,7 @@
 <p data-aigc-mark="1" style="margin:0 0 8px;font-size:10px;line-height:1.3;color:#6b6560;font-weight:400;">AI生成</p>
 
     <div id="loadingScreen" aria-hidden="true">
+        <canvas id="loadingGrid"></canvas>
         <div id="ui"></div>
         <div id="loadingLabel">✦ LOADING</div>
     </div>
@@ -82,11 +85,11 @@
             <h2 class="section-title"><span class="star">✦</span> GitHub</h2>
             <div class="github-stats">
                 <a href="https://github.com/FallenLeeee" target="_blank" rel="noopener" class="gh-stat-card" data-label="GitHub Stats">
-                    <img src="https://github-readme-stats-eight-theta.vercel.app/api?username=FallenLeeee&show_icons=true&bg_color=050505&text_color=777&title_color=bbb&icon_color=555&hide_border=true&hide_rank=true&card_width=300" alt="GitHub Stats" height="85" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
+                    <img src="https://github-readme-stats-eight-theta.vercel.app/api?username=FallenLeeee&show_icons=true&bg_color=050505&text_color=777&title_color=bbb&icon_color=555&hide_border=true&hide_rank=true&card_width=300" alt="GitHub Stats" height="85" loading="eager" fetchpriority="high" onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
                     <span class="gh-fallback">FallenLeeee 的 GitHub 统计</span>
                 </a>
                 <a href="https://github.com/FallenLeeee" target="_blank" rel="noopener" class="gh-stat-card" data-label="Top Languages">
-                    <img src="https://github-readme-stats-eight-theta.vercel.app/api/top-langs/?username=FallenLeeee&layout=compact&bg_color=050505&text_color=777&title_color=bbb&hide_border=true&card_width=300" alt="Top Languages" height="85" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
+                    <img src="https://github-readme-stats-eight-theta.vercel.app/api/top-langs/?username=FallenLeeee&layout=compact&bg_color=050505&text_color=777&title_color=bbb&hide_border=true&card_width=300" alt="Top Languages" height="85" loading="eager" fetchpriority="high" onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
                     <span class="gh-fallback">FallenLeeee 的常用语言</span>
                 </a>
             </div>
@@ -104,6 +107,6 @@
 
     <script src="vendor/marked.min.js"></script>
     <script src="projects-data.js"></script>
-    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/main.js?v=3"></script>
 </body>
 </html>

@@ -1,4 +1,5 @@
 import { reduceMotion } from './core.js';
+import { initReveals as initRevealsDOM } from '../ui.js';
 
 /**
  * 滚动编排：只跟 scroll，不做鼠标视差（背景网格要求不参与）。
@@ -18,26 +19,7 @@ export function createScrollDirector(state) {
     onScroll();
 
     function initReveals() {
-        const reveals = document.querySelectorAll('.reveal');
-        if (reduceMotion || !('IntersectionObserver' in window)) {
-            reveals.forEach(el => el.classList.add('visible'));
-            return;
-        }
-        const io = new IntersectionObserver((entries) => {
-            entries.forEach(en => {
-                if (en.isIntersecting) {
-                    en.target.classList.add('visible');
-                    io.unobserve(en.target);
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-        reveals.forEach((el, i) => {
-            if (!el.style.getPropertyValue('--reveal-delay')) {
-                el.style.setProperty('--reveal-delay', (Math.min(i, 3) * 90) + 'ms');
-            }
-            io.observe(el);
-        });
+        initRevealsDOM();
     }
 
     function update(t, dt) {
