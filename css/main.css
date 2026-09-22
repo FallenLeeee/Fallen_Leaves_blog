@@ -872,6 +872,29 @@ body.legacy-bg .overlay {
     html { scroll-behavior: auto; }
 }
 
+/* ─── 桌面端：卡片毛玻璃（只作用卡片本身） ─── */
+@media (min-width: 601px) {
+    .section,
+    .skills-section,
+    .github-section,
+    .social a,
+    .skill-tag,
+    .github-stats a,
+    .project-card .card-frame {
+        background: rgba(12, 14, 16, 0.1);
+        backdrop-filter: blur(6px) saturate(1.15);
+        -webkit-backdrop-filter: blur(6px) saturate(1.15);
+    }
+
+    .project-card .card-frame {
+        background: rgba(12, 14, 16, 0.9);
+    }
+
+    .project-card .card-body {
+        background: transparent;
+    }
+}
+
 /* ─── Responsive ─── */
 @media (max-width: 600px) {
     html { scroll-behavior: auto; }
