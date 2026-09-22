@@ -4,7 +4,7 @@
  */
 export function createSpotlight() {
     const SEL = '.section, .skills-section, .github-section, .social a, .skill-tag, .github-stats a, .project-card';
-    const SPOT_RADIUS = 640;
+    const SPOT_RADIUS = 300;
     let targets = [];
     let mx = -10000, my = -10000;
 

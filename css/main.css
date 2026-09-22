@@ -783,7 +783,7 @@ a { color: inherit; }
     opacity: 0;
     transition: opacity 0.25s;
     background: radial-gradient(
-        220px circle at var(--mx, -600px) var(--my, -600px),
+        300px circle at var(--mx, -600px) var(--my, -600px),
         rgba(255, 255, 255, 0.85),
         rgba(255, 255, 255, 0.2) 35%,
         transparent 55%
