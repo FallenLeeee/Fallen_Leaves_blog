@@ -43,8 +43,29 @@ body {
     overflow-x: hidden;
     min-height: 100vh;
     font-size: 16.5px;
+    /* Windows 上 font-smoothing 几乎无效，用 text-shadow 柔边 + 微描边加实笔画 */
     -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: geometricPrecision;
+}
+
+h1, h2, h3, h4, p, a, span, li, td, th, code, pre, div, button, .card-body, .project-readme-inner {
+    /* 同色 0.4px 双向柔边，等效更稳的抗锯齿观感 */
+    text-shadow:
+        0 0 0.4px currentColor,
+        0 0 0.4px currentColor;
+}
+
+/* 小字再加一点微描边，避免细体发虚 */
+.project-card p,
+.project-card .meta,
+.project-readme-inner p,
+.project-readme-inner li,
+.project-readme-inner td,
+.project-readme-inner th,
+.about-text,
+.footer {
+    -webkit-text-stroke: 0.2px currentColor;
 }
 
 /* 滚动条：隐藏横向，纵向做成细暗条 */
@@ -490,6 +511,10 @@ a { color: inherit; }
     border-top: 1px solid var(--border-soft);
     font-weight: 500;
     color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: geometricPrecision;
+    text-shadow: 0 0 0.4px currentColor, 0 0 0.4px currentColor;
 }
 
 .project-readme-inner h1 { font-size: 1.3rem; font-weight: 600; }
