@@ -1,0 +1,88 @@
+- generic [active] [ref=f9e1]:
+  - paragraph [ref=f9e2]: AI生成
+  - generic [ref=f9e77]: ✦ LOADING
+  - generic [ref=f9e78]:
+    - banner [ref=f9e79]:
+      - heading "FallenLeaves" [level=1] [ref=f9e80]
+      - paragraph [ref=f9e81]: —— 落叶 ——
+      - generic [ref=f9e82]:
+        - link "Bilibili FALLENLEAVES_233" [ref=f9e83] [cursor=pointer]:
+          - /url: https://space.bilibili.com/491062624
+          - text: Bilibili
+          - generic [ref=f9e86]: FALLENLEAVES_233
+        - link "GitHub FallenLeeee" [ref=f9e87] [cursor=pointer]:
+          - /url: https://github.com/FallenLeeee
+          - text: GitHub
+          - generic [ref=f9e90]: FallenLeeee
+        - link "抖音 FallenLee" [ref=f9e91] [cursor=pointer]:
+          - /url: https://www.douyin.com/user/MS4wLjABAAAAR3K6HW8QwsuaDjyFrAQt5fJtC8XMJB4SMzOgHcVDwGEND9ABQGiOGqcGqluFDxd0
+          - text: 抖音
+          - generic [ref=f9e94]: FallenLee
+    - generic [ref=f9e95]:
+      - heading "✦ About" [level=2] [ref=f9e96]:
+        - generic [ref=f9e97]: ✦
+        - text: About
+      - paragraph [ref=f9e98]: 流萤厨一只，没事喜欢捣鼓AI。还是学生时间不多，再加上懒得考证所以没啥成就，就喜欢没事的时候写点小玩意儿。
+    - generic [ref=f9e99]:
+      - heading "✦ Tech Stack" [level=2] [ref=f9e100]:
+        - generic [ref=f9e101]: ✦
+        - text: Tech Stack
+      - generic [ref=f9e102]:
+        - generic [ref=f9e103]: C#
+        - generic [ref=f9e104]: Java
+        - generic [ref=f9e105]: Python
+        - generic [ref=f9e106]: JavaScript
+        - generic [ref=f9e107]: Docker
+    - generic [ref=f9e108]:
+      - heading "✦ GitHub" [level=2] [ref=f9e109]:
+        - generic [ref=f9e110]: ✦
+        - text: GitHub
+      - generic [ref=f9e111]:
+        - link [ref=f9e112] [cursor=pointer]:
+          - /url: https://github.com/FallenLeeee
+          - img "GitHub Stats" [ref=f9e113]
+        - link [ref=f9e114] [cursor=pointer]:
+          - /url: https://github.com/FallenLeeee
+          - img "Top Languages" [ref=f9e115]
+    - generic [ref=f9e116]:
+      - heading "✦ Projects" [level=2] [ref=f9e117]:
+        - generic [ref=f9e118]: ✦
+        - text: Projects
+      - generic [ref=f9e119]:
+        - generic [ref=f9e121] [cursor=pointer]:
+          - heading [level=3] [ref=f9e122]:
+            - link "MiBudsController" [ref=f9e123]:
+              - /url: https://github.com/FallenLeeee/MiBudsController
+          - paragraph [ref=f9e124]: 通过蓝牙 RFCOMM 控制 Redmi Buds 8 Pro 及协议兼容的小米/红米耳机的 Windows 桌面应用。
+          - link "github.com/FallenLeeee/MiBudsController →" [ref=f9e127]:
+            - /url: https://github.com/FallenLeeee/MiBudsController
+          - generic: ✦ 加载 README 中 ...
+        - generic [ref=f9e130] [cursor=pointer]:
+          - heading [level=3] [ref=f9e131]:
+            - link "NPURealtimeSubtitle" [ref=f9e132]:
+              - /url: https://github.com/FallenLeeee/NPURealtimeSubtitle
+          - paragraph [ref=f9e133]: Windows 11 本地实时双语字幕工具：采集系统声音，本地识别与翻译，屏幕底部透明字幕。
+          - link "github.com/FallenLeeee/NPURealtimeSubtitle →" [ref=f9e136]:
+            - /url: https://github.com/FallenLeeee/NPURealtimeSubtitle
+          - generic: ✦ 加载 README 中 ...
+        - generic [ref=f9e139] [cursor=pointer]:
+          - heading [level=3] [ref=f9e140]:
+            - link "PassiveMapRecorder" [ref=f9e141]:
+              - /url: https://github.com/FallenLeeee/PassiveMapRecorder
+          - paragraph [ref=f9e142]: 一个纯客户端的 Fabric 模组，被动记录玩家已加载区块的地形数据，直接写入存档文件。
+          - link "github.com/FallenLeeee/PassiveMapRecorder →" [ref=f9e145]:
+            - /url: https://github.com/FallenLeeee/PassiveMapRecorder
+          - generic: ✦ 加载 README 中 ...
+        - generic [ref=f9e148] [cursor=pointer]:
+          - heading [level=3] [ref=f9e149]:
+            - link "CPU 虚拟化解锁工具" [ref=f9e150]:
+              - /url: https://github.com/FallenLeeee/UnlockVirtualization
+          - paragraph [ref=f9e151]: 检测并管理占用 CPU 虚拟化的应用程序和服务。
+          - link "github.com/FallenLeeee/UnlockVirtualization →" [ref=f9e154]:
+            - /url: https://github.com/FallenLeeee/UnlockVirtualization
+          - generic: ✦ 加载 README 中 ...
+  - contentinfo [ref=f9e156]:
+    - text: © 2026 FallenLeaves✦
+    - link "GitHub" [ref=f9e157] [cursor=pointer]:
+      - /url: https://github.com/FallenLeeee
+    - text: ✦Powered by GitHub Pages
